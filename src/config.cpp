@@ -1,3 +1,6 @@
+// TODO:
+//   - validate json schema
+
 #include "config.h"
 #include "MpdClient.h"
 #include <algorithm>
@@ -99,6 +102,10 @@ int configure(const char *filename, config_t *cfg) {
 // TODO: prioritize certain covers and consider behaviour of duplicate cover
 // configurations
 std::string config::get_cover(const TrackInfo *track) {
+  if (!track) // Player is idle
+    return "mpd_large";
+
+  // TODO: optimize
   for (cover_config cover_cfg : covers) {
     switch (cover_cfg.type) {
     case GLOBAL_COVER:
@@ -109,12 +116,8 @@ std::string config::get_cover(const TrackInfo *track) {
     case SONG_COVER:
       if (strcmp(track->RawTrackName.c_str(), cover_cfg.value.c_str()) == 0)
         return cover_cfg.dest_url;
-    default:
-      std::string message = "mpd_large";
-      return message;
     }
-
-    // unreachable
-    return "";
   }
+
+  return "mpd_large";
 }
