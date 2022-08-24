@@ -32,6 +32,8 @@ endif()
 
 set(SOURCE_FILES
     src/main.cpp
+    src/config.cpp
+    src/config.h
     src/MpdClient.cpp
     src/MpdClient.h)
 

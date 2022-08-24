@@ -11,8 +11,12 @@ struct TrackInfo
     uint64_t PlayTimeSeconds;
     
     std::string TrackName;
+    std::string URI;
     int TrackNumber;
     int TotalTracks;
+
+     std::string AlbumName;
+     std::string RawTrackName;
 };
 
 class MpdClient
