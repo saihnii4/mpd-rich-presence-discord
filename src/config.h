@@ -8,7 +8,6 @@ typedef struct config config_t;
 typedef struct cover_config cover_config_t;
 
 enum COVER_TYPE {
-  GLOBAL_COVER,
   ALBUM_COVER,
   SONG_COVER,
 };
@@ -21,8 +20,11 @@ struct cover_config {
 
 struct config {
   const char *stateFormat;
-  const char *detailsFormat;
+  const char *detailsFormat; // TODO: convert to snake case
   std::vector<cover_config> covers;
+  //std::string idle_cover;
+  //std::string global_cover;
+  std::string fallback_cover;
 
   std::string get_cover(const TrackInfo *track);
 };

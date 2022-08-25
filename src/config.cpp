@@ -105,19 +105,19 @@ std::string config::get_cover(const TrackInfo *track) {
   if (!track) // Player is idle
     return "mpd_large";
 
+  std::string fallback = this->;
+
   // TODO: optimize
   for (cover_config cover_cfg : covers) {
     switch (cover_cfg.type) {
-    case GLOBAL_COVER:
-      return cover_cfg.dest_url;
     case ALBUM_COVER:
       if (strcmp(track->AlbumName.c_str(), cover_cfg.value.c_str()) == 0)
-        return cover_cfg.dest_url;
+        fallback = cover_cfg.dest_url;
     case SONG_COVER:
       if (strcmp(track->RawTrackName.c_str(), cover_cfg.value.c_str()) == 0)
-        return cover_cfg.dest_url;
+        return cover_cfg.dest_url
     }
   }
 
-  return "mpd_large";
+  return fallback;
 }
