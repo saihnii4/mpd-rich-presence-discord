@@ -1,11 +1,12 @@
 #pragma once
 
-#include "MpdClient.h"
 #include <string>
-#include <vector>
+#include "MpdClient.h"
 
-typedef struct config config_t;
-typedef struct cover_config cover_config_t;
+template <typename... Args>
+const char *format_string(const char *format, Args... args);
+
+int configure(const char *filename, config *cfg);
 
 enum COVER_TYPE {
   ALBUM_COVER,
@@ -18,15 +19,4 @@ struct cover_config {
   std::string dest_url;
 };
 
-struct config {
-  const char *stateFormat;
-  const char *detailsFormat; // TODO: convert to snake case
-  std::vector<cover_config> covers;
-  //std::string idle_cover;
-  //std::string global_cover;
-  std::string fallback_cover;
-
-  std::string get_cover(const TrackInfo *track);
-};
-
-int configure(const char *filename, config *cfg);
+enum class OptionalConfiguation : bool;

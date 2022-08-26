@@ -46,7 +46,8 @@ PresencePayload makePresence(const AppState &app, const TrackInfo *track,
   DiscordRichPresence &rp = payload.Presence;
 
   std::string cover_art = cfg.get_cover(track);
-  char *cover_art_cstr = new char[cover_art.length() - 1]; // remove null terminator
+  char *cover_art_cstr =
+      new char[cover_art.length() - 1]; // remove null terminator
   std::strcpy(cover_art_cstr, cover_art.c_str());
 
   rp.largeImageKey = cover_art_cstr;
@@ -244,7 +245,7 @@ int main(int argc, char **args) {
 
   while (true) {
     try {
-      MpdClient mpd(host, port);
+      MpdClient mpd(host, port, cfg);
       mpd.connect(pass);
 
       // we store the track way back here since it's easier then allocating

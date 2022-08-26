@@ -1,8 +1,8 @@
 // TODO:
 //   - validate json schema
 
-#include "config.h"
 #include "MpdClient.h"
+#include "config.h"
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -16,7 +16,7 @@ std::vector<std::string> config_keys = {"details_format", "state_format",
 
 // Formats strings (le epic retarded code)
 template <typename... Args>
-const char *__format_string(const char *format, Args... args) {
+const char *format_string(const char *format, Args... args) {
   size_t nbytes = snprintf(NULL, 0, format, args...);
 
   char *buf = (char *)malloc(sizeof(char) * nbytes);
@@ -47,7 +47,15 @@ void test_assert_for_each(F f, T t, const char *members[],
 template <typename T>
 inline void assert_member(T t, const char *member, const char *message) {
   if (!t.HasMember(member))
-    throw std::runtime_error(__format_string(message, member));
+    throw std::runtime_error(format_string(message, member));
+}
+
+template <typename T>
+T get_config(rapidjson::Document doc, const char *member) {
+  if (!doc.HasMember(member))
+    throw std::runtime_error(format_string("Missing %s", member));
+
+  return doc[member].Get<T>();
 }
 
 int configure(const char *filename, config_t *cfg) {
@@ -68,12 +76,12 @@ int configure(const char *filename, config_t *cfg) {
        config_key != config_keys.rend(); ++config_key) {
 
     if (!doc.HasMember(config_key->c_str()))
-      throw std::runtime_error(__format_string(
+      throw std::runtime_error(format_string(
           "Missing `%s` attribute in configuration", config_key->c_str()));
   }
 
-  cfg->detailsFormat = doc["details_format"].GetString();
-  cfg->stateFormat = doc["state_format"].GetString();
+  cfg->details_format = doc["details_format"].GetString();
+  cfg->state_format = doc["state_format"].GetString();
 
   auto covers = doc["covers"].GetArray();
 
@@ -105,17 +113,21 @@ std::string config::get_cover(const TrackInfo *track) {
   if (!track) // Player is idle
     return "mpd_large";
 
-  std::string fallback = this->;
+  if (this->global_cover)
+    return *this->global_cover;
+
+  std::string fallback = this->fallback_cover;
 
   // TODO: optimize
   for (cover_config cover_cfg : covers) {
     switch (cover_cfg.type) {
     case ALBUM_COVER:
       if (strcmp(track->AlbumName.c_str(), cover_cfg.value.c_str()) == 0)
-        fallback = cover_cfg.dest_url;
+        fallback =
+            cover_cfg.dest_url; // fallback in case song cover isn't present
     case SONG_COVER:
       if (strcmp(track->RawTrackName.c_str(), cover_cfg.value.c_str()) == 0)
-        return cover_cfg.dest_url
+        return cover_cfg.dest_url;
     }
   }
 

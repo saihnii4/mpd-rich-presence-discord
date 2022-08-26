@@ -1,8 +1,7 @@
 #include "MpdClient.h"
 #include <sstream>
-
 #include <iostream>
-
+#include "config.h"
 #include "mpd/client.h"
 #include "mpd/idle.h"
 #include "mpd/list.h"
@@ -108,11 +107,16 @@ std::string createTitle(mpd_song_t *song) {
   RET_CLAMP_STRSTREAM(stream);
 }
 
-std::string createArtist(mpd_song_t *song) {
+std::string createArtist(mpd_song_t *song, config cfg) {
   std::stringstream stream;
 
   const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
   const char *album = mpd_song_get_tag(song, MPD_TAG_ALBUM, 0);
+
+  const char* result = format_string(cfg.details_format, artist, album);
+
+  std::cout << result << std::endl;
+
   if (artist)
     stream << "by " << artist;
   if (album) {
@@ -150,7 +154,7 @@ TrackInfo MpdClient::getCurrentTrack() {
   t.TotalTracks = mpd_status_get_queue_length(mpdStatus);
   t.TrackNumber = mpd_status_get_song_pos(mpdStatus) + 1;
   t.PlayTimeSeconds = mpd_status_get_elapsed_time(mpdStatus);
-  t.Artist = createArtist(mpdCurrentSong);
+  t.Artist = createArtist(mpdCurrentSong, cfg_);
   t.TrackName = createTitle(mpdCurrentSong);
   t.URI = mpd_song_get_uri(mpdCurrentSong);
 
