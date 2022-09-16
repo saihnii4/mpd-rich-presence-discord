@@ -7,6 +7,8 @@
     <a href="https://github.com/SSStormy/mpd-rich-presence-discord">MPD Rich Presence for Discord</a>
 </h1>
 
+*borked until futher notice*
+
 <p align="center">
     <b>Broadcast MPD state via Discord Rich Presence</b>
 </p>
