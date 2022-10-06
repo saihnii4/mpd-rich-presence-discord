@@ -12,7 +12,7 @@ struct TrackInfo;
 
 struct config {
   const char *state_format;
-  const char *details_format;
+  const char *details_format = "%s %s";
   std::vector<cover_config> covers;
   std::string *global_cover;
   std::string fallback_cover = "mpd_large";

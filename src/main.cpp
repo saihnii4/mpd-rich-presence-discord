@@ -92,8 +92,10 @@ void updatePresence(MpdClient &mpd, TrackInfo *trackBuffer, AppState &app,
                     config cfg) {
   MpdClient::State state = mpd.getState();
   PresencePayload p;
+  printf("wth\n");
 
   if (state == MpdClient::Idle) {
+    printf("Lol\n");
     if (app.BroadcastIdle) {
       p = makePresence(app, nullptr, true, cfg);
     } else {
@@ -102,13 +104,18 @@ void updatePresence(MpdClient &mpd, TrackInfo *trackBuffer, AppState &app,
       return;
     }
   } else if (state == MpdClient::Paused && !app.BroadcastPaused) {
+    printf("1ol\n");
     app.PrevAppIdHash = 0;
     Discord_Shutdown();
     return;
   } else if (state == MpdClient::Playing || state == MpdClient::Paused) {
+    printf("Jm\n");
     *trackBuffer = mpd.getCurrentTrack();
     p = makePresence(app, trackBuffer, state == MpdClient::Paused, cfg);
+    printf("\na");
   }
+
+  printf("ok\n");
 
   auto appIdHash = FNVHash(p.AppId);
   if (app.PrevAppIdHash != appIdHash) {

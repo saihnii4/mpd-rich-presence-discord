@@ -14,36 +14,6 @@
 std::vector<std::string> config_keys = {"details_format", "state_format",
                                         "covers"};
 
-// Formats strings (le epic retarded code)
-template <typename... Args>
-const char *format_string(const char *format, Args... args) {
-  size_t nbytes = snprintf(NULL, 0, format, args...);
-
-  char *buf = (char *)malloc(sizeof(char) * nbytes);
-  snprintf(buf, nbytes + 1, format, args...);
-  return buf;
-}
-
-// deprecated (wasn't even in use lol)
-template <typename F, typename T>
-void assert_for_each(F f, std::vector<T> vec, const char *message) {
-  std::for_each(vec.begin(), vec.end(), [f, message](T t) {
-    if (!f(t))
-      throw std::runtime_error(message);
-  });
-}
-
-template <typename F, typename T>
-void test_assert_for_each(F f, T t, const char *members[],
-                          const char *message) {
-  size_t arr_size = sizeof(*members) / sizeof(members[0]);
-  for (int i = 0; i < arr_size; i++) {
-    if (!f(t, members[i], message))
-      throw std::runtime_error(message);
-  }
-}
-// end of depecration
-
 template <typename T>
 inline void assert_member(T t, const char *member, const char *message) {
   if (!t.HasMember(member))
@@ -90,6 +60,7 @@ int configure(const char *filename, config_t *cfg) {
 
     const auto cover_obj = coverPtr->GetObject();
 
+    // TODO: streamline
     assert_member(cover_obj, "type", "Missing `%s` attribute in cover");
     assert_member(cover_obj, "value", "Missing `%s` attribute in cover");
     assert_member(cover_obj, "dest_url", "Missing `%s` attribute in cover");

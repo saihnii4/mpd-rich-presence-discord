@@ -113,6 +113,8 @@ std::string createArtist(mpd_song_t *song, config cfg) {
   const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
   const char *album = mpd_song_get_tag(song, MPD_TAG_ALBUM, 0);
 
+  // TODO: seg fault can occur if improper details_format is given
+  //       - validate details_format
   const char* result = format_string(cfg.details_format, artist, album);
 
   std::cout << result << std::endl;
