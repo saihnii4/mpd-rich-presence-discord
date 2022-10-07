@@ -117,8 +117,6 @@ std::string createArtist(mpd_song_t *song, config cfg) {
   //       - validate details_format
   const char* result = format_string(cfg.details_format, artist, album);
 
-  std::cout << result << std::endl;
-
   if (artist)
     stream << "by " << artist;
   if (album) {
@@ -164,8 +162,13 @@ TrackInfo MpdClient::getCurrentTrack() {
       mpd_song_get_tag(mpdCurrentSong, MPD_TAG_TITLE, 0);
   std::string album_name = mpd_song_get_tag(mpdCurrentSong, MPD_TAG_ALBUM, 0);
 
-  t.RawTrackName = raw_track_name;
-  t.AlbumName = album_name;
+  if (raw_track_name.c_str()) t.RawTrackName = raw_track_name;
+  else t.RawTrackName = "foobar";
+
+  if (album_name.c_str()) t.AlbumName = album_name;
+  else t.AlbumName = "foobar";
+
+  std::cout << t.RawTrackName << std::endl;
 
   mpd_song_free(mpdCurrentSong);
   mpd_status_free(mpdStatus);
