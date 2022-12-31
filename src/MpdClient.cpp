@@ -168,8 +168,6 @@ TrackInfo MpdClient::getCurrentTrack() {
   if (album_name.c_str()) t.AlbumName = album_name;
   else t.AlbumName = "foobar";
 
-  std::cout << t.RawTrackName << std::endl;
-
   mpd_song_free(mpdCurrentSong);
   mpd_status_free(mpdStatus);
 
