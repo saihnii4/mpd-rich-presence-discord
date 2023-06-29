@@ -11,7 +11,7 @@
 #include <strings.h>
 #include <vector>
 
-std::vector<std::string> config_keys = {"details_format", "state_format",
+std::vector<std::string> config_keys = {"details_format", "state_format", "global_cover",
                                         "covers"};
 
 template <typename T>
@@ -52,6 +52,8 @@ int configure(const char *filename, config_t *cfg) {
 
   cfg->details_format = doc["details_format"].GetString();
   cfg->state_format = doc["state_format"].GetString();
+  if (doc.HasMember("global_cover"))
+      cfg->global_cover = doc["global_cover"].GetString();
 
   auto covers = doc["covers"].GetArray();
 
@@ -84,8 +86,8 @@ std::string config::get_cover(const TrackInfo *track) {
   if (!track) // Player is idle
     return "mpd_large";
 
-  if (this->global_cover)
-    return *this->global_cover;
+  if (this->global_cover != "")
+    return this->global_cover;
 
   std::string fallback = this->fallback_cover;
 
