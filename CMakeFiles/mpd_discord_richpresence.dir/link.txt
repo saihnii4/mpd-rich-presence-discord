@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/mpd_discord_richpresence.dir/src/main.cpp.o CMakeFiles/mpd_discord_richpresence.dir/src/config.cpp.o CMakeFiles/mpd_discord_richpresence.dir/src/MpdClient.cpp.o -o mpd_discord_richpresence  -Wl,-rpath,/home/pur0/Code/mpd-rich-presence-discord/lib/discord-rpc/src lib/discord-rpc/src/libdiscord-rpc.so -lpthread -lmpdclient 

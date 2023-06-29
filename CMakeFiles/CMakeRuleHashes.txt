@@ -1,2 +1,0 @@
-# Hashes of file build rules.
-8f2cacfd7733c1c579486a70adabfb5c lib/discord-rpc/CMakeFiles/clangformat

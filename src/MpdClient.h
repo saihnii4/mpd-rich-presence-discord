@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mpd/connection.h"
+#include <stdint.h>
 #include <string>
 #include <vector>
 

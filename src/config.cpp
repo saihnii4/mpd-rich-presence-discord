@@ -1,8 +1,8 @@
 // TODO:
 //   - validate json schema
 
-#include "MpdClient.h"
 #include "config.h"
+#include "MpdClient.h"
 #include <algorithm>
 #include <fstream>
 #include <iostream>
