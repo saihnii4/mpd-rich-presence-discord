@@ -11,7 +11,7 @@
 #include <strings.h>
 #include <vector>
 
-std::vector<std::string> config_keys = {"details_format", "state_format", "global_cover",
+std::vector<std::string> config_keys = {"details_format", "state_format",
                                         "covers"};
 
 template <typename T>
@@ -52,8 +52,12 @@ int configure(const char *filename, config_t *cfg) {
 
   cfg->details_format = doc["details_format"].GetString();
   cfg->state_format = doc["state_format"].GetString();
+
   if (doc.HasMember("global_cover"))
-      cfg->global_cover = doc["global_cover"].GetString();
+    cfg->global_cover = doc["global_cover"].GetString();
+
+  if (doc.HasMember("fallback_cover"))
+    cfg->fallback_cover = doc["fallback_cover"].GetString();
 
   auto covers = doc["covers"].GetArray();
 
