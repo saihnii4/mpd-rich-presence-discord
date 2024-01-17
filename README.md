@@ -118,5 +118,6 @@ The CMakeFile will take care of finding discord-rpc. If it cannot find it, it wi
 
 ### TODO:
 
-[ ] - Validate configuration
+[+] - Validate configuration
 [ ] - idk tbh
+[ ] - Fix corrupted_size issue
